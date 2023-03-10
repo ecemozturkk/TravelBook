@@ -14,6 +14,7 @@
 		52ECE84229BB40C100855D20 /* TravelBook.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 52ECE84029BB40C100855D20 /* TravelBook.xcdatamodeld */; };
 		52ECE84429BB40C200855D20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52ECE84329BB40C200855D20 /* Assets.xcassets */; };
 		52ECE84729BB40C200855D20 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52ECE84529BB40C200855D20 /* LaunchScreen.storyboard */; };
+		52ECE84F29BB52A700855D20 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECE84E29BB52A700855D20 /* ListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		52ECE84329BB40C200855D20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		52ECE84629BB40C200855D20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		52ECE84829BB40C200855D20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		52ECE84E29BB52A700855D20 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				52ECE83729BB40C100855D20 /* AppDelegate.swift */,
 				52ECE83929BB40C100855D20 /* SceneDelegate.swift */,
 				52ECE83B29BB40C100855D20 /* ViewController.swift */,
+				52ECE84E29BB52A700855D20 /* ListViewController.swift */,
 				52ECE83D29BB40C100855D20 /* Main.storyboard */,
 				52ECE84329BB40C200855D20 /* Assets.xcassets */,
 				52ECE84529BB40C200855D20 /* LaunchScreen.storyboard */,
@@ -144,6 +147,7 @@
 				52ECE84229BB40C100855D20 /* TravelBook.xcdatamodeld in Sources */,
 				52ECE83C29BB40C100855D20 /* ViewController.swift in Sources */,
 				52ECE83829BB40C100855D20 /* AppDelegate.swift in Sources */,
+				52ECE84F29BB52A700855D20 /* ListViewController.swift in Sources */,
 				52ECE83A29BB40C100855D20 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
