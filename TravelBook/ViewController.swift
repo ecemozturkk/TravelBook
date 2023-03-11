@@ -83,6 +83,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                                         mapView.addAnnotation(annotation)
                                         nameText.text = annotationTitle
                                         noteText.text = annotationSubtitle
+                                        
+                                        locationManager.stopUpdatingLocation()
+                                        
+                                        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                                        let region = MKCoordinateRegion(center: coordinate, span: span)
+                                        mapView.setRegion(region, animated: true)
                                     }
                                 }
                             }
@@ -126,13 +132,66 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     //Bu fonksyion bize güncellenen lokasyonları bir dizi içerisinde ([CLLocation]) verir
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        //locations[0] // CLLocation Objesi : İçinde enlem ve boylam barındıran bir obje
-        let location = CLLocationCoordinate2D(latitude: locations[0].coordinate.latitude, longitude: locations[0].coordinate.longitude)
-        //zoom seviyesi, değerler (0.05) ne kadar küçük olursa o kadar zoomlamış oluruz
-        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-        //merkez neresi alınsın ve ne kadar zoomlansın
-        let region = MKCoordinateRegion(center: location, span: span)
-        mapView.setRegion(region, animated: true)
+        if selectedTitle == "" {
+            //locations[0] // CLLocation Objesi : İçinde enlem ve boylam barındıran bir obje
+            let location = CLLocationCoordinate2D(latitude: locations[0].coordinate.latitude, longitude: locations[0].coordinate.longitude)
+            //zoom seviyesi, değerler (0.05) ne kadar küçük olursa o kadar zoomlamış oluruz
+            let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            //merkez neresi alınsın ve ne kadar zoomlansın
+            let region = MKCoordinateRegion(center: location, span: span)
+            mapView.setRegion(region, animated: true)
+        } else {
+            //
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        if annotation is MKUserLocation {
+            return nil
+        }
+        
+        let reuseId = "myAnnotation"
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKMarkerAnnotationView
+        
+        if pinView == nil {
+            pinView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            pinView?.canShowCallout = true
+            pinView?.tintColor = UIColor.black
+            
+            let button = UIButton(type: UIButton.ButtonType.detailDisclosure) // detailDisclosure button = pine basıldığında çıkan "i" butonu
+            pinView?.rightCalloutAccessoryView = button
+            
+        } else {
+            pinView?.annotation = annotation
+        }
+            
+        return pinView
+    }
+    
+    //detailDisclosure butonuna basıldığında:
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if selectedTitle != "" {
+            let requestLocation = CLLocation(latitude: annotationLatitude, longitude: annotationLongitude)
+            CLGeocoder().reverseGeocodeLocation(requestLocation) { placemarks, error in
+                //closure
+                
+                if let placemark = placemarks {
+                    if placemark.count > 0 {
+                        let newPlacemark = MKPlacemark(placemark: placemark[0]) //MKMapItem için MKPlaceMark objesi gerekli, bu obje de "reverseGeocodeLocation" denilen methodla alıyoruz
+                        let item = MKMapItem(placemark: newPlacemark) //navigasyonun açılabilmesi için MKMapItem oluşturulması gerekiyor
+                        item.name = self.annotationTitle
+                        let launchOptions = [MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeDriving] //MKMapItem modunu arabayla göster
+                        item.openInMaps(launchOptions: launchOptions)
+                        
+                        
+                    }
+                }
+                
+                
+            }
+        }
     }
     
     
@@ -155,6 +214,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         } catch {
             print("error")
         }
+        
+        NotificationCenter.default.post(name: NSNotification.Name("newPlace"), object: nil)
+        navigationController?.popViewController(animated: true)
         
     }
     
